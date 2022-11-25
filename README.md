@@ -22,5 +22,5 @@ official reference : https://oembed.com/
           - [ ] Oembed 공급 url이 변경되면 예외가 발생한다. - CustomException.NOT_SUPPORTED_URL
         - [ ] 찾고자하는 url의 Host를 찾는다. - OembedService.findHost()
           - [ ] 잘못된 url형식이면 프로토콜 예외가 발생한다. - CustomException.INVALID_PROTOCOL
-      - [ ] 찾고자하는 url을 utf-8로 인코딩 할 수 있다. - OembedService.findEncodeUrl()
+      - [x] 찾고자하는 url을 utf-8로 인코딩 할 수 있다. - OembedService.findEncodeUrl()
         - [ ] 잘못된 url형식이면 프로토콜 예외가 발생한다. - CustomException.INVALID_PROTOCOL
