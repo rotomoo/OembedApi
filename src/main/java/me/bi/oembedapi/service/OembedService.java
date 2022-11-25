@@ -2,17 +2,26 @@ package me.bi.oembedapi.service;
 
 import me.bi.oembedapi.exception.CustomException;
 import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 
 import static me.bi.oembedapi.exception.ErrorCode.*;
 
 @Component
 public class OembedService {
+
+    @Value("${oembed.providers.url}")
+    private String oembedProvidersUrl;
 
     public String getOembedJson() {
         return null;
@@ -30,8 +39,19 @@ public class OembedService {
         return null;
     }
 
-    public String urlToJsonArray() {
-        return null;
+    public JSONArray urlToJsonArray(String url) {
+        JSONArray jsonArray = null;
+
+        try {
+            URL providersUrl = new URL(url);
+            URLConnection urlConnection = providersUrl.openConnection();
+            InputStream inputStream = urlConnection.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+            jsonArray = (JSONArray) new JSONParser().parse(br);
+        } catch (Exception e) {
+            throw new CustomException(NOT_SUPPORTED_URL);
+        }
+        return jsonArray;
     }
 
     public String findHost(String url) {
