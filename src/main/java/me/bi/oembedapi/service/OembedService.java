@@ -24,8 +24,15 @@ public class OembedService {
     @Value("${oembed.facebook.accessToken}")
     private String accessToken;
 
-    public String getOembedJson() {
-        return null;
+    public String getOembedJson(String searchUrl) {
+        JSONArray oembedProvidersJsonArray = urlToJsonArray(oembedProvidersUrl);
+        String searchUrlHost = findHost(searchUrl);
+        String oembedUrl = findOembedUrl(oembedProvidersJsonArray, searchUrlHost);
+        String encodeUrl = findEncodeUrl(searchUrl);
+        String oembedFullUrl = findOembedFullUrl(oembedUrl, encodeUrl);
+        String oembedJson = urlToJsonObject(oembedFullUrl).toString();
+
+        return oembedJson;
     }
 
     public JSONObject urlToJsonObject(String url) {
