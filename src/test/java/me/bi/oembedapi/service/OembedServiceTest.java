@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -30,8 +31,48 @@ class OembedServiceTest {
     void urlToJsonObject() {
     }
 
+    @DisplayName("Success Case: facebook, 전체 url을 찾는 기능 테스트")
     @Test
     void findOembedFullUrl() {
+        String url = "https://www.instagram.com/p/BUawPlPF_Rx/";
+        JSONArray jsonArray = oembedService.urlToJsonArray(oembedProvidersUrl);
+        String host = oembedService.findHost(url);
+        String oembedUrl = oembedService.findOembedUrl(jsonArray, host);
+        String encodeUrl = oembedService.findEncodeUrl(url);
+
+        String oembedFullUrl = oembedService.findOembedFullUrl(oembedUrl, encodeUrl);
+
+        assertThat(oembedFullUrl).contains("https://graph.facebook.com/v10.0/instagram_oembed?url" +
+                "=https%3A%2F%2Fwww.instagram.com%2Fp%2FBUawPlPF_Rx%2F&format=json&access_token=input");
+    }
+
+    @DisplayName("Success Case: vimeo, 전체 url을 찾는 기능 테스트")
+    @Test
+    void findOembedFullUrl2() {
+        String url = "https://vimeo.com/20097015";
+        JSONArray jsonArray = oembedService.urlToJsonArray(oembedProvidersUrl);
+        String host = oembedService.findHost(url);
+        String oembedUrl = oembedService.findOembedUrl(jsonArray, host);
+        String encodeUrl = oembedService.findEncodeUrl(url);
+
+        String oembedFullUrl = oembedService.findOembedFullUrl(oembedUrl, encodeUrl);
+
+        assertEquals(oembedFullUrl, "https://vimeo.com/api/oembed.json?url=https%3A%2F%2Fvimeo.com%2F20097015");
+    }
+
+    @DisplayName("Success Case: youtube, 전체 url을 찾는 기능 테스트")
+    @Test
+    void findOembedFullUrl3() {
+        String url = "https://www.youtube.com/watch?v=KqNN_8msHCc";
+        JSONArray jsonArray = oembedService.urlToJsonArray(oembedProvidersUrl);
+        String host = oembedService.findHost(url);
+        String oembedUrl = oembedService.findOembedUrl(jsonArray, host);
+        String encodeUrl = oembedService.findEncodeUrl(url);
+
+        String oembedFullUrl = oembedService.findOembedFullUrl(oembedUrl, encodeUrl);
+
+        assertEquals(oembedFullUrl, "https://www.youtube.com/oembed?url=https%3A%2F%2F" +
+                "www.youtube.com%2Fwatch%3Fv%3DKqNN_8msHCc&format=json");
     }
 
     @DisplayName("Success Case: JsonArray, url의 host를 통한 oembed url 반환 테스트")
