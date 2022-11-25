@@ -24,6 +24,9 @@ public class OembedService {
     @Value("${oembed.providers.url}")
     private String oembedProvidersUrl;
 
+    @Value("${oembed.facebook.accessToken}")
+    private String accessToken;
+
     public String getOembedJson() {
         return null;
     }
@@ -32,8 +35,17 @@ public class OembedService {
         return null;
     }
 
-    public String findOembedFullUrl() {
-        return null;
+    public String findOembedFullUrl(String oembedUrl, String encodeUrl) {
+        // vimeo.oembedUrl = "https://vimeo.com/api/oembed.{format}" => https://vimeo.com/api/oembed.json
+        oembedUrl = oembedUrl.replace("{format}", "json");
+
+        // https://vimeo.com/api/oembed.json?url=encodeUrl
+        oembedUrl += "?url=" + encodeUrl + (oembedUrl.contains("json") ? "" : "&format=json");
+
+        // instagram => &format=json&access_token={accessToken}
+        oembedUrl += oembedUrl.contains("facebook") ? "&access_token=" + accessToken : "";
+
+        return oembedUrl;
     }
 
     public String findOembedUrl(JSONArray oembedProvidersJsonArray, String searchUrlHost) {
