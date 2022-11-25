@@ -30,3 +30,4 @@ official reference : https://oembed.com/
         - [x] 잘못된 url형식이면 프로토콜 예외가 발생한다. - CustomException.INVALID_PROTOCOL
 
 ## ▶ 동작 영상
+https://user-images.githubusercontent.com/30739181/203954276-31ff9239-a00f-41d6-9fc5-abc915d07db4.mp4
