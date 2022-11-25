@@ -31,8 +31,19 @@ public class OembedService {
         return null;
     }
 
-    public JSONArray urlToJsonObject() {
-        return null;
+    public JSONArray urlToJsonObject(String url) {
+        JSONArray jsonArray = null;
+
+        try {
+            URL providersUrl = new URL(url);
+            URLConnection urlConnection = providersUrl.openConnection();
+            InputStream inputStream = urlConnection.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+            jsonArray = (JSONArray) new JSONParser().parse(br);
+        } catch (Exception e) {
+            throw new CustomException(NOT_SUPPORTED_URL);
+        }
+        return jsonArray;
     }
 
     /**
