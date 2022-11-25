@@ -4,7 +4,10 @@ import me.bi.oembedapi.exception.CustomException;
 import org.json.simple.JSONArray;
 import org.springframework.stereotype.Component;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+
+import static me.bi.oembedapi.exception.ErrorCode.*;
 
 @Component
 public class OembedService {
@@ -37,8 +40,8 @@ public class OembedService {
         String encodeUrl = "";
         try {
             encodeUrl = URLEncoder.encode(url, "utf-8");
-        } catch (Exception e) {
-            throw new CustomException();
+        } catch (UnsupportedEncodingException e) {
+            throw new CustomException(NOT_SUPPORTED_URL);
         }
         return encodeUrl;
     }
