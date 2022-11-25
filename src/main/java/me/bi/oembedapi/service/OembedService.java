@@ -2,6 +2,7 @@ package me.bi.oembedapi.service;
 
 import me.bi.oembedapi.exception.CustomException;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -35,8 +36,23 @@ public class OembedService {
         return null;
     }
 
-    public String findOembedUrl() {
-        return null;
+    public String findOembedUrl(JSONArray oembedProvidersJsonArray, String searchUrlHost) {
+        String oembedUrl = "";
+        try {
+            for (Object oembedProvidersJsonObject : oembedProvidersJsonArray) {
+                JSONObject oembedProvidersJson = (JSONObject) oembedProvidersJsonObject;
+                String providerUrlValue = oembedProvidersJson.get("provider_url").toString();
+                if (findHost(providerUrlValue).equals(searchUrlHost)) {
+                    JSONArray endpointsValue = (JSONArray) oembedProvidersJson.get("endpoints");
+                    oembedUrl = ((JSONObject) endpointsValue.get(0)).get("url").toString();
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            throw new CustomException(INVALID_PROTOCOL);
+        }
+
+        return oembedUrl;
     }
 
     public JSONArray urlToJsonArray(String url) {
