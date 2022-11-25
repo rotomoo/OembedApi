@@ -2,10 +2,12 @@ package me.bi.oembedapi.service;
 
 import me.bi.oembedapi.exception.CustomException;
 import me.bi.oembedapi.exception.ErrorCode;
+import org.json.simple.JSONArray;
 import org.junit.Assert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,6 +18,9 @@ class OembedServiceTest {
 
     @Autowired
     private OembedService oembedService;
+
+    @Value("${oembed.providers.url}")
+    private String oembedProvidersUrl;
 
     @Test
     void getOembedJson() {
@@ -33,8 +38,14 @@ class OembedServiceTest {
     void findOembedUrl() {
     }
 
+    @DisplayName("Success Case: Oembed 공급 url를 통한 JsonArray를 반환 테스트")
     @Test
     void urlToJsonArray() {
+
+        JSONArray jsonArray = oembedService.urlToJsonArray(oembedProvidersUrl);
+        String substring = jsonArray.toString().substring(0, 2);
+
+        assertEquals(substring, "[{");
     }
 
     @DisplayName("Success Case: 유효한 url 호스트 테스트")
