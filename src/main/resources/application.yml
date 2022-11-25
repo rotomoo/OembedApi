@@ -1,0 +1,6 @@
+oembed:
+  providers:
+    url: https://oembed.com/providers.json
+
+  facebook:
+    accessToken: input your appId|input your clientToken
