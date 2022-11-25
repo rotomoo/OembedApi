@@ -11,7 +11,7 @@ official reference : https://oembed.com/
 ****
 
 ## 기능 목록
-- [ ] Oembed요청하여 Json을 반환한다. - OembedService.getOembedJson()
+- [x] Oembed요청하여 Json을 반환한다. - OembedService.getOembedJson()
   - [x] Oembed요청 전체url로 JsonObject객체를 반환할 수 있다. - OembedService.urlToJsonObject()
     - [x] Oembed요청 전체url이 잘못된 경로일경우 예외가 발생한다. - CustomException.INVALID_PATH
     - [x] Oembed요청이 권한이 필요하면 예외가 발생한다. -  CustomException.UNAUTHORIZED_CONTENT

@@ -25,10 +25,36 @@ class OembedServiceTest {
     private String oembedProvidersUrl;
 
     @Test
-    void getOembedJson() {
+    @DisplayName("Success Case: 유튜브 oembed 통합 테스트")
+    void youtubeTest() {
+        String searchUrl = "https://www.youtube.com/watch?v=dBD54EZIrZo";
+        
+        String oembedJson = oembedService.getOembedJson(searchUrl);
+        
+        assertEquals(oembedJson.substring(0, 1), "{");
     }
 
-    @DisplayName("Success Case: 전체 url을 JsonObject로 변환하는 기능 테스트")
+    @DisplayName("Fail Case: 없는 입력 통합 테스트")
+    @Test
+    void getOembedJson2() {
+        String searchUrl = "";
+
+        CustomException customException = Assert.assertThrows(CustomException.class, () -> oembedService.getOembedJson(searchUrl));
+
+        assertEquals(ErrorCode.INVALID_PROTOCOL, customException.getErrorCode());
+    }
+
+    @DisplayName("Fail Case: 잘못된 경로 통합 테스트")
+    @Test
+    void getOembedJson3() {
+        String searchUrl = "https://www.youtube.com";
+
+        CustomException customException = Assert.assertThrows(CustomException.class, () -> oembedService.getOembedJson(searchUrl));
+
+        assertEquals(ErrorCode.INVALID_PATH, customException.getErrorCode());
+    }
+
+    @DisplayName("Success Case: 전체 url을 JsonObject로 변환하는 단위 기능 테스트")
     @Test
     void urlToJsonObject() {
         String oembedFullUrl = "https://vimeo.com/api/oembed.json?url=https%3A%2F%2Fvimeo.com%2F20097015";
@@ -39,7 +65,7 @@ class OembedServiceTest {
         assertEquals(substring, "{\"");
     }
 
-    @DisplayName("Success Case: facebook, 전체 url을 찾는 기능 테스트")
+    @DisplayName("Success Case: facebook, 전체 url을 찾는 단위 기능 테스트")
     @Test
     void findOembedFullUrl() {
         String url = "https://www.instagram.com/p/BUawPlPF_Rx/";
@@ -54,7 +80,7 @@ class OembedServiceTest {
                 "=https%3A%2F%2Fwww.instagram.com%2Fp%2FBUawPlPF_Rx%2F&format=json&access_token=input");
     }
 
-    @DisplayName("Success Case: vimeo, 전체 url을 찾는 기능 테스트")
+    @DisplayName("Success Case: vimeo, 전체 url을 찾는 단위 기능 테스트")
     @Test
     void findOembedFullUrl2() {
         String url = "https://vimeo.com/20097015";
@@ -68,7 +94,7 @@ class OembedServiceTest {
         assertEquals(oembedFullUrl, "https://vimeo.com/api/oembed.json?url=https%3A%2F%2Fvimeo.com%2F20097015");
     }
 
-    @DisplayName("Success Case: youtube, 전체 url을 찾는 기능 테스트")
+    @DisplayName("Success Case: youtube, 전체 url을 찾는 단위 기능 테스트")
     @Test
     void findOembedFullUrl3() {
         String url = "https://www.youtube.com/watch?v=KqNN_8msHCc";
@@ -83,7 +109,7 @@ class OembedServiceTest {
                 "www.youtube.com%2Fwatch%3Fv%3DKqNN_8msHCc&format=json");
     }
 
-    @DisplayName("Success Case: JsonArray, url의 host를 통한 oembed url 반환 테스트")
+    @DisplayName("Success Case: JsonArray, url의 host를 통한 oembed url 반환 단위 기능 테스트")
     @Test
     void findOembedUrl() {
         String url = "https://www.youtube.com/watch?v=KqNN_8msHCc";
@@ -95,7 +121,7 @@ class OembedServiceTest {
         assertEquals(oembedUrl, "https://www.youtube.com/oembed");
     }
 
-    @DisplayName("Success Case: Oembed 공급 url를 통한 JsonArray를 반환 테스트")
+    @DisplayName("Success Case: Oembed 공급 url를 통한 JsonArray를 반환 단위 기능 테스트")
     @Test
     void urlToJsonArray() {
         JSONArray jsonArray = oembedService.urlToJsonArray(oembedProvidersUrl);
@@ -104,7 +130,7 @@ class OembedServiceTest {
         assertEquals(substring, "[{");
     }
 
-    @DisplayName("Success Case: 유효한 url 호스트 테스트")
+    @DisplayName("Success Case: 유효한 url 호스트 단위 기능 테스트")
     @Test
     void findHost() {
         String url = "https://www.youtube.com/watch?v=KqNN_8msHCc";
@@ -114,7 +140,7 @@ class OembedServiceTest {
         assertEquals(host, "youtube");
     }
 
-    @DisplayName("fail Case: 프로토콜 없는 url 호스트 테스트")
+    @DisplayName("Fail Case: 프로토콜 없는 url 호스트 단위 기능 테스트")
     @Test
     void findHost2() {
         String url = "www.youtube.com/watch?v=KqNN_8msHCc";
@@ -124,7 +150,7 @@ class OembedServiceTest {
         assertEquals(ErrorCode.INVALID_PROTOCOL, customException.getErrorCode());
     }
 
-    @DisplayName("Success Case: 유효한 url 인코딩 테스트")
+    @DisplayName("Success Case: 유효한 url 인코딩 단위 기능 테스트")
     @Test
     void findEncodeUrl() {
         String url = "https://search.shopping.naver.com/search/all?where=all&frm=NVSCTAB&query=%EC%87%BC%ED%95%91";
