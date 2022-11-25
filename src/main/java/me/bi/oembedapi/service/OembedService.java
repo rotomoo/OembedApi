@@ -2,9 +2,11 @@ package me.bi.oembedapi.service;
 
 import me.bi.oembedapi.exception.CustomException;
 import org.json.simple.JSONArray;
+import org.springframework.stereotype.Component;
 
 import java.net.URLEncoder;
 
+@Component
 public class OembedService {
 
     public String getOembedJson() {
