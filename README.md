@@ -8,9 +8,13 @@ official reference : https://oembed.com/
     2. 핵심 라이브러리 - Spring Web, Json-simple
     3. 기타 라이브러리 - Lombok, Devtools, Test
 
-****
+## ▶ 개발 순서
+    1. 기능 목록 작성
+    2. 기능 개발 - 단위 테스트, 통합 Exception 포함
+    4. 통합 테스트 개발
+    3. 컨트롤러, 뷰 구현
 
-## 기능 목록
+## ▶ 기능 목록
 - [x] Oembed요청하여 Json을 반환한다. - OembedService.getOembedJson()
   - [x] Oembed요청 전체url로 JsonObject객체를 반환할 수 있다. - OembedService.urlToJsonObject()
     - [x] Oembed요청 전체url이 잘못된 경로일경우 예외가 발생한다. - CustomException.INVALID_PATH
@@ -24,3 +28,5 @@ official reference : https://oembed.com/
           - [x] 잘못된 url형식이면 프로토콜 예외가 발생한다. - CustomException.INVALID_PROTOCOL
       - [x] 찾고자하는 url을 utf-8로 인코딩 할 수 있다. - OembedService.findEncodeUrl()
         - [x] 잘못된 url형식이면 프로토콜 예외가 발생한다. - CustomException.INVALID_PROTOCOL
+
+## ▶ 동작 영상
