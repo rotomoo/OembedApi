@@ -7,10 +7,7 @@ import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -31,19 +28,25 @@ public class OembedService {
         return null;
     }
 
-    public JSONArray urlToJsonObject(String url) {
-        JSONArray jsonArray = null;
+    public JSONObject urlToJsonObject(String url) {
+        JSONObject jsonObject = null;
 
         try {
             URL providersUrl = new URL(url);
             URLConnection urlConnection = providersUrl.openConnection();
             InputStream inputStream = urlConnection.getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-            jsonArray = (JSONArray) new JSONParser().parse(br);
-        } catch (Exception e) {
-            throw new CustomException(NOT_SUPPORTED_URL);
+            jsonObject = (JSONObject) new JSONParser().parse(br);
+        } catch (FileNotFoundException e) {
+            throw new CustomException(INVALID_PATH);
+        } catch (IOException e) {
+            if (e.toString().contains("401")) throw new CustomException(UNAUTHORIZED_CONTENT);
+            if (url.contains("facebook")) throw new CustomException(INVALID_ACCESSTOKEN);
+            throw new CustomException(INVALID_PATH);
+        }  catch (Exception e) {
+            throw new CustomException(INVALID_PATH);
         }
-        return jsonArray;
+        return jsonObject;
     }
 
     /**
