@@ -34,14 +34,21 @@ class OembedServiceTest {
     void findOembedFullUrl() {
     }
 
+    @DisplayName("Success Case: JsonArray, url의 host를 통한 oembed url 반환 테스트")
     @Test
     void findOembedUrl() {
+        String url = "https://www.youtube.com/watch?v=KqNN_8msHCc";
+        JSONArray jsonArray = oembedService.urlToJsonArray(oembedProvidersUrl);
+        String host = oembedService.findHost(url);
+
+        String oembedUrl = oembedService.findOembedUrl(jsonArray, host);
+
+        assertEquals(oembedUrl, "https://www.youtube.com/oembed");
     }
 
     @DisplayName("Success Case: Oembed 공급 url를 통한 JsonArray를 반환 테스트")
     @Test
     void urlToJsonArray() {
-
         JSONArray jsonArray = oembedService.urlToJsonArray(oembedProvidersUrl);
         String substring = jsonArray.toString().substring(0, 2);
 
