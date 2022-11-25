@@ -35,6 +35,11 @@ public class OembedService {
         return null;
     }
 
+    /**
+     *  Facebook의 API를 사용하는경우 access_Token이 필요하며 해당 access_Token 앱은 oembed Read 기능이 Advanced Access 수준이어야한다.
+     *  Advanced Access 수준이 되려면 앱 검수를 받아 승인되야함. 승인 과정은 5일정도 소요.
+     *  https://graph.facebook.com/v14.0/instagram_oembed?url=https://www.instagram.com/p/BUawPlPF_Rx/&access_token={accessToken}
+     */
     public String findOembedFullUrl(String oembedUrl, String encodeUrl) {
         // vimeo.oembedUrl = "https://vimeo.com/api/oembed.{format}" => https://vimeo.com/api/oembed.json
         oembedUrl = oembedUrl.replace("{format}", "json");
