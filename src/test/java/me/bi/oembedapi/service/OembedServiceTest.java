@@ -1,5 +1,8 @@
 package me.bi.oembedapi.service;
 
+import me.bi.oembedapi.exception.CustomException;
+import me.bi.oembedapi.exception.ErrorCode;
+import org.junit.Assert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +37,24 @@ class OembedServiceTest {
     void urlToJsonArray() {
     }
 
+    @DisplayName("Success Case: 유효한 url 호스트 테스트")
     @Test
     void findHost() {
+        String url = "https://www.youtube.com/watch?v=KqNN_8msHCc";
+
+        String host = oembedService.findHost(url);
+
+        assertEquals(host, "youtube");
+    }
+
+    @DisplayName("fail Case: 프로토콜 없는 url 호스트 테스트")
+    @Test
+    void findHost2() {
+        String url = "www.youtube.com/watch?v=KqNN_8msHCc";
+
+        CustomException customException = Assert.assertThrows(CustomException.class, () -> oembedService.findHost(url));
+
+        assertEquals(ErrorCode.INVALID_PROTOCOL, customException.getErrorCode());
     }
 
     @DisplayName("Success Case: 유효한 url 인코딩 테스트")
