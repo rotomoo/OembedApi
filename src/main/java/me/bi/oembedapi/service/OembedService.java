@@ -1,7 +1,9 @@
 package me.bi.oembedapi.service;
 
+import me.bi.oembedapi.exception.CustomException;
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+
+import java.net.URLEncoder;
 
 public class OembedService {
 
@@ -29,7 +31,13 @@ public class OembedService {
         return null;
     }
 
-    public JSONObject urlToJsonObject(String url) {
-        return null;
+    public String findEncodeUrl(String url) {
+        String encodeUrl = "";
+        try {
+            encodeUrl = URLEncoder.encode(url, "utf-8");
+        } catch (Exception e) {
+            throw new CustomException();
+        }
+        return encodeUrl;
     }
 }
