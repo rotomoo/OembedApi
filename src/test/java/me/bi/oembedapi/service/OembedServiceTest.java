@@ -3,6 +3,7 @@ package me.bi.oembedapi.service;
 import me.bi.oembedapi.exception.CustomException;
 import me.bi.oembedapi.exception.ErrorCode;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.junit.Assert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,8 +28,15 @@ class OembedServiceTest {
     void getOembedJson() {
     }
 
+    @DisplayName("Success Case: 전체 url을 JsonObject로 변환하는 기능 테스트")
     @Test
     void urlToJsonObject() {
+        String oembedFullUrl = "https://vimeo.com/api/oembed.json?url=https%3A%2F%2Fvimeo.com%2F20097015";
+
+        JSONObject jsonObject = oembedService.urlToJsonObject(oembedFullUrl);
+        String substring = jsonObject.toString().substring(0, 2);
+
+        assertEquals(substring, "{\"");
     }
 
     @DisplayName("Success Case: facebook, 전체 url을 찾는 기능 테스트")
